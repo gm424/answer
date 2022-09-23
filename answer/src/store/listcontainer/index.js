@@ -14,7 +14,12 @@ const mutations={
     },
     //删除state里dataList下标为index的记录
     DELETEDATA(state,index){
-        state.dataList.splice(index,1);
+        if(index==-2){
+            state.dataList=[]
+        }else{
+            state.dataList.splice(index,1);
+        }
+        
     }
 };
 const actions={
@@ -39,7 +44,7 @@ const actions={
         var i=--index;
         commit("DELETEDATA",i)
     
-}
+},
 };
 //计算属性，在项目中为了简化数据而生
 //可以把我们将来在组件当中需要的数据简化一下

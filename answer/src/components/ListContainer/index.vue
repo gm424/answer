@@ -2,7 +2,7 @@
   <div class="list">
     <ul class="title-col">
         <li class="col-1">
-            <input class="input" type="checkbox"/>
+            <input class="input" type="checkbox" @click="SelectAll()" :checked="this.checkall==1"/>
              <span>ID</span>
         </li>
         <li class="col-2">
@@ -55,7 +55,8 @@ data() {
      dialogTableVisible: false,
      dialogFormVisible: false,
      index:'',
-     list:''
+     list:'',
+     checkall:0
   }
 },
  mounted(){
@@ -86,8 +87,12 @@ data() {
    },
    //点击弹窗中的NO按钮
        NotDelete(){
-         //将点击对应的记录的勾选状态改为未勾选
-          this.dataList[--this.index].check=0
+         //遍历所有的元素都不打勾
+      this.dataList.forEach(element => {
+       element.check=0
+      });
+          //让全选的复选框不勾选
+          this.checkall=0
           //关闭弹窗
           this.dialogFormVisible=false
           //提示删除以取消
@@ -98,12 +103,25 @@ data() {
      //将要删除的记录的index作为参数，触发一个action通知vuex修改数据
      this.$store.dispatch("deleteData",this.index)
           this.$message('Delete success!');
+          //让全选的复选框不勾选
+         this.checkall=0
           //弹窗关闭
           this.dialogFormVisible=false
+          
+   },
+   //点击全选触发事件
+   SelectAll(){
+     //打开删除提示的弹窗
+     this.dialogFormVisible=true
+     //遍历所有的元素都打勾
+     this.dataList.forEach(element => {
+       element.check=1
+     });
+     //全选时传递一个负值的index
+     this.index=-1
+     //点击全选框的状态为勾选
+     this.checkall=1
    }
-  
-  
-   
 }
 }
 </script>
